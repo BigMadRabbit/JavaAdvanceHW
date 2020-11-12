@@ -1,5 +1,6 @@
 package by.filemanager;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +23,7 @@ public class FManager {
 		System.out.println("Change folder - cd 'dir'");
 		System.out.println("View files in filder - dir");
 		System.out.println("Copy file - copy 'file1' 'file2'");
+		System.out.println("Open file - open 'file'");
 		System.out.println(" ");		
 		
 		System.out.println(file.getAbsolutePath().toString()+">");
@@ -89,6 +91,32 @@ public class FManager {
 					System.out.println("File not found: "+path.toAbsolutePath().toString());  
 				  }
 				}
+			  break;
+			  case "open":
+			    if(subLines.length >= 2) {
+			      if(subLines[1].toString().indexOf(":") > 0) {
+					path = Paths.get(subLines[1]);   
+				  } else {
+					path = Paths.get(file.getAbsolutePath()+"\\"+subLines[1]);
+				  }
+				  if(Files.exists(path)) {
+					System.out.println(" Содержимое "+path);
+					System.out.println("----------------------------");
+					System.out.println("");
+					try (BufferedReader reader = Files.newBufferedReader(path)) { 
+			  	      String line = reader.readLine();
+		              while (line != null) {
+		                System.out.println(line);
+		                line = reader.readLine();
+		              }				  	  
+					} catch (IOException e) {
+					  e.printStackTrace();
+					}
+					System.out.println(" ");    
+					System.out.println(" ");    
+				  }
+				
+			    }
 			  break;
 			  default:					
 				System.out.println(" Неизвестная команда'"+ subLines[0] +"'");
