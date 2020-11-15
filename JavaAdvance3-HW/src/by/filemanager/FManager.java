@@ -58,9 +58,11 @@ public class FManager {
 				    for(File f : file.listFiles()) {
 				      if(f.isDirectory()) {
 				        if(f.getName().equals(subLines[1])) {								        
-					      file = new File(file.getAbsolutePath().toString()+"\\"+subLines[1]);	
-				        } else {
+					      file = new File(file.getAbsolutePath().toString()+"\\"+subLines[1]);
+					      break;
+				        } else if (subLines[1].toString().indexOf(":") > 0) { 
 						  file = new File(subLines[1]);	
+						  break;
 						}
 				      }
 				    }			
