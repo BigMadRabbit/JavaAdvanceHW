@@ -6,13 +6,12 @@ import java.util.concurrent.TimeUnit;
 public class UnLoader extends Worker {
 	private boolean finished = false;
 	private Semaphore semaphore;
-	private Semaphore semaphoreNext;
 	
 	public UnLoader(String name, int timeWork, Semaphore semaphore, Semaphore semaphoreNext) {
 		setName(name);
 		setTimeWork(timeWork);
-		this.semaphore = semaphore;
-		this.semaphoreNext = semaphoreNext;
+		setSemaphore(semaphore);
+		setSemaphoreNext(semaphoreNext);
 	}	
 	
 	@Override
@@ -31,24 +30,20 @@ public class UnLoader extends Worker {
 	}
 	
 	@Override
-	protected void next() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
 	public boolean finish() {
 		return finished;
 	}
 
 	@Override
 	protected void acquire() throws InterruptedException {
+		semaphore = getSemaphore();
 		semaphore.acquire();
 	}
 
 	@Override
 	protected void release() {
-		semaphoreNext.release();
+		semaphore = getSemaphoreNext();
+		semaphore.release();
 	}
 	
 

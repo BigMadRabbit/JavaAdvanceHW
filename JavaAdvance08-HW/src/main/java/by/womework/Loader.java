@@ -6,14 +6,12 @@ import java.util.concurrent.TimeUnit;
 public class Loader extends Worker {
 	private boolean finished = false;
 	private Semaphore semaphore;
-	private Semaphore semaphoreNext;
-
 	
 	public Loader(String name, int timeWork, Semaphore semaphore, Semaphore semaphoreNext) {
 		setName(name);
 		setTimeWork(timeWork);
-		this.semaphore = semaphore;
-		this.semaphoreNext = semaphoreNext;
+		setSemaphore(semaphore);
+		setSemaphoreNext(semaphoreNext);
 	}
 	
 	@Override
@@ -35,17 +33,14 @@ public class Loader extends Worker {
 	
 	@Override
 	protected void acquire() throws InterruptedException {
+		semaphore = getSemaphore();
 		semaphore.acquire();
 	}
 
 	@Override
 	protected void release() {
-		semaphoreNext.release();
-	}
-	
-	@Override
-	protected void next() {
-	   	
+		semaphore = getSemaphoreNext();
+		semaphore.release();
 	}
 
 	@Override

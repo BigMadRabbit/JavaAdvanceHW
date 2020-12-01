@@ -6,20 +6,14 @@ import java.util.concurrent.TimeUnit;
 public class Trucker extends Worker {
 	private boolean finished = false;
 	private Semaphore semaphore;
-	private Semaphore semaphoreNext;
-	private Semaphore semaphorePrev;
 	
 	public Trucker(String name, int timeWork, Semaphore semaphore, Semaphore semaphoreNext) {
 		setName(name);
 		setTimeWork(timeWork);
-		this.semaphore = semaphore;
-		this.semaphoreNext = semaphoreNext;
+		setSemaphore(semaphore);
+		setSemaphoreNext(semaphoreNext);
 	}	
-	
-	public void setSemaphorePrev(Semaphore semaphorePrev) {
-		this.semaphorePrev = semaphorePrev;
-	}
-	
+
 	@Override
 	protected void work() throws InterruptedException {
 		Truck truck = getTruck();	
@@ -30,15 +24,12 @@ public class Trucker extends Worker {
 	}
 	
 	@Override
-	protected void next() {
-		// TODO Auto-generated method stub		
-	}
-	@Override
 	public boolean finish() {
 		return finished;
 	}
 	@Override
 	protected void acquire() throws InterruptedException {
+		semaphore = getSemaphore(); 
 		semaphore.acquire();
 	}
 	
@@ -46,10 +37,11 @@ public class Trucker extends Worker {
 	protected void release() {
 		Truck truck = getTruck();
 		if(truck.getCurrCapacity() > 0) {
-			semaphoreNext.release();
+			semaphore = getSemaphoreNext();
 		} else {
-			semaphorePrev.release();
+			semaphore = getSemaphorePrev();
 		}
+		semaphore.release();
 	}
 
 }

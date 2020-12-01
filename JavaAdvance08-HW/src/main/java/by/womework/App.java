@@ -14,7 +14,7 @@ public class App
     	Semaphore truckerSemaphore   = new Semaphore(0);
 		Semaphore unloaderSemaphore  = new Semaphore(0);
 		
-		Heap heap   = new Heap(10);
+		Heap heap   = new Heap(100);
 		Truck truck = new Truck(6);
 		
 		Loader  loader    = new Loader("Loader", 3, loaderSemaphore, truckerSemaphore);

@@ -9,7 +9,9 @@ public abstract class Worker implements Runnable {
 	private Truck truck;
 	private String name;
 	private int timeWork;
-	private int priority;
+	private Semaphore semaphore;
+	private Semaphore semaphoreNext;
+	private Semaphore semaphorePrev;
 		
 	public void start() {
 		System.out.println(getName() + ": Start");
@@ -32,14 +34,30 @@ public abstract class Worker implements Runnable {
 		this.timeWork = timeWork;
 	}
 	
-	public int getPriority() {
-		return priority;
+	public Semaphore getSemaphore() {
+		return semaphore;
 	}
 
-	public void setPriority(int priority) {
-		this.priority = priority;
+	public void setSemaphore(Semaphore semaphore) {
+		this.semaphore = semaphore;
 	}
-	
+
+	public Semaphore getSemaphoreNext() {
+		return semaphoreNext;
+	}
+
+	public void setSemaphoreNext(Semaphore semaphoreNext) {
+		this.semaphoreNext = semaphoreNext;
+	}
+
+	public Semaphore getSemaphorePrev() {
+		return semaphorePrev;
+	}
+
+	public void setSemaphorePrev(Semaphore semaphorePrev) {
+		this.semaphorePrev = semaphorePrev;
+	}
+
 	public Heap getHeap() {
 		return heap;
 	}
@@ -58,14 +76,11 @@ public abstract class Worker implements Runnable {
 
     protected abstract void work() throws InterruptedException;
 	
-	protected abstract void next();
-	
 	public abstract boolean finish();
 	
 	protected abstract void acquire() throws InterruptedException;
+	
 	protected abstract void release();
-
-
 
 	@Override
 	public void run() {
