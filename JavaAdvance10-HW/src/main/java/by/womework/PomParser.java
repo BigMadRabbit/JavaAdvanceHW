@@ -63,7 +63,7 @@ public class PomParser extends DefaultHandler {
 		if (!thisElement.toString().equals("")) { 
 		String value = new String(new String(ch, start, length)).replace("\n", "");
 		
-		System.out.println(subElement + " "+ thisElement +" : " +value);
+		//System.out.println(subElement + " "+ thisElement +" : " +value);
 		if (subElement.equals("project")) {
 			switch (thisElement.toString()) {
 			case "modelVersion":
